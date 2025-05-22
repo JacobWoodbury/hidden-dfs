@@ -69,5 +69,73 @@ public class Traverse {
     v45.neighbors = new ArrayList<>(List.of(v23));
     v23.neighbors = new ArrayList<>(List.of());
     v67.neighbors = new ArrayList<>(List.of(v91));
+
+
+    System.out.println(reachable(graph, 3, 56));
+
+
+  }//end of main
+
+  public static <T> void printVs(Vertex<T> head){
+    if(head == null) return;
+    System.out.println(head.data);
+    for(Vertex<T> v: head.neighbors){
+      printVs(v);
+    }
+    return;
   }
-}
+
+  public static void printGossipers(Person head){
+   Set<Person> visited = new HashSet<>();
+   printGossipers(head, visited);
+  }
+  public static void printGossipers(Person head, Set<Person> visited){
+    if(head == null || visited.contains(head)) return;
+
+    System.out.println(head.getName());
+    visited.add(head);
+    for(Person p : head.getConfidants()){
+      printGossipers(p, visited);
+    }
+    return;
+  }
+
+  public static boolean reachable(Map<Integer, Set<Integer>> graph, int start, int end){
+    Set<Integer> visited = new HashSet<>();
+    return reachable(graph, start, end, visited);
+  }
+  public static boolean reachable(Map<Integer, Set<Integer>> graph, int start, int end, Set<Integer> visited){
+    if(start == end) return true; 
+    if(visited.contains(start) || graph == null || !graph.containsKey(start))return false;
+    visited.add(start);
+    for(int i : graph.get(start)){
+    if (reachable(graph, i, end, visited)){
+      return true;
+    }
+    }
+    return false;
+
+
+  }
+
+  public static void printCanDrink(Person current){
+    if(current == null) return;
+    if(current.getAge() >= 21){
+      System.out.print(current.getName() + " " + current.getName());
+    }
+    for(Person p : current.getConfidants()){
+      printCanDrink(p);
+    }
+  }
+
+  public static void printCanDrink(Person current, Set<Person> visited){
+    if(current == null) return;
+    if(current.getAge() >= 21 && !visited.contains(current)){
+      System.out.print(current.getName() + " " + current.getName());
+    }
+    for(Person p : current.getConfidants()){
+      printCanDrink(p);
+    }
+  }
+
+}//end of class
